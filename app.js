@@ -4,6 +4,7 @@
 var appTmp = angular.module('appTmp', [
   'ngRoute',
   'appTmp.dashboard',
+  'appTmp.employee',
   'appTmp.view1',
   'appTmp.view2',
   'appTmp.version'

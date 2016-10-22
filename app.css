@@ -34,3 +34,11 @@
     transform: translateY(-50%);
 }
 
+.top_nav .navbar {
+    /*height: 55px;*/
+    min-height: 53px;
+}
+.top_nav nav li a {
+    padding-top: 15px!important;
+    padding-bottom: 15px!important;
+}
