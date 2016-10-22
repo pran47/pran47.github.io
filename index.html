@@ -17,7 +17,7 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>    
   
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="shortcut icon" href="favicon.gif">
+  <link rel="shortcut icon" href="favicon.svg">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="resources/css/bootstrap.min.css">
@@ -64,13 +64,13 @@
 </head>
 
 
-<body class="dashboard site-navbar-small">
+<body ng-controller="MainCtrl" class="dashboard site-navbar-small" ngsf-fullscreen>
 <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
     
     <!-- Header Nav -->
-    <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse" role="navigation">
+    <nav ng-hide="currentPath === '/login'" class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle hamburger hamburger-close navbar-toggle-left hided" data-toggle="menubar">
         <span class="sr-only">Toggle navigation</span>
@@ -80,8 +80,8 @@
         <i class="icon wb-more-horizontal" aria-hidden="true"></i>
       </button>
       <a class="navbar-brand navbar-brand-center" href="/#">
-        <img class="navbar-brand-logo navbar-brand-logo-normal" src="resources/images/tmp_logo.png" title="Remark">
-        <img class="navbar-brand-logo navbar-brand-logo-special" src="resources/images/logo-blue.png" title="Remark">
+        <img class="navbar-brand-logo navbar-brand-logo-normal" src="resources/images/logo.svg" title="TMP">
+        <!--<img class="navbar-brand-logo navbar-brand-logo-special" src="resources/images/logo-blue.png" title="TMP">-->
         <span class="navbar-brand-text hidden-xs"> TMP</span>
       </a>
       <button type="button" class="navbar-toggle collapsed" data-target="#site-navbar-search" data-toggle="collapse">
@@ -104,9 +104,8 @@
             </a>
           </li>
           <li class="hidden-xs" id="toggleFullscreen">
-            <a class="icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
-              <span class="sr-only">Toggle fullscreen</span>
-            </a>
+             <a class="icon icon-fullscreen" ngsf-toggle-fullscreen show-if-fullscreen=false></a>
+             <a class="icon icon-fullscreen active" ngsf-toggle-fullscreen show-if-fullscreen=true></a>
           </li>
           <li class="hidden-float">
             <a class="icon wb-search" data-toggle="collapse" href="#" data-target="#site-navbar-search" role="button">
@@ -266,33 +265,6 @@
 
         <!-- Navbar Toolbar Right -->
         <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)" data-animation="scale-up" aria-expanded="false" role="button">
-              <span class="flag-icon flag-icon-us"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem">
-                  <span class="flag-icon flag-icon-gb"></span> English</a>
-              </li>
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem">
-                  <span class="flag-icon flag-icon-fr"></span> French</a>
-              </li>
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem">
-                  <span class="flag-icon flag-icon-cn"></span> Chinese</a>
-              </li>
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem">
-                  <span class="flag-icon flag-icon-de"></span> German</a>
-              </li>
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem">
-                  <span class="flag-icon flag-icon-nl"></span> Dutch</a>
-              </li>
-            </ul>
-          </li>
           <li class="dropdown">
             <a class="navbar-avatar dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up" role="button">
               <span class="avatar avatar-online">
@@ -509,7 +481,7 @@
           <div class="form-group">
             <div class="input-search">
               <i class="input-search-icon wb-search" aria-hidden="true"></i>
-              <input type="text" class="form-control" name="site-search" placeholder="Search...">
+              <input type="text" class="form-control" name="site-search" placeholder="Type and hit enter to search...">
               <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search" data-toggle="collapse" aria-label="Close"></button>
             </div>
           </div>
@@ -517,12 +489,11 @@
       </div>
       <!-- End Site Navbar Seach -->
     </div>
-  </nav>
-    
+  </nav>    
     
     
     <!-- Main Nav -->
-    <div class="site-menubar site-menubar-light top_nav">
+    <div ng-hide="currentPath === '/login'" class="site-menubar site-menubar-light top_nav">
         <nav class="navbar navbar-default">
       <div class="">
         <div class="navbar-header">
@@ -544,7 +515,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a href="#/add-employee"><i class="icon wb-plus"></i> Add</a></li>
-                <li><a href="#"><i class="icon wb-list"></i> List</a></li>
+                <li><a href="#/list-employee"><i class="icon wb-list"></i> List</a></li>
               </ul>
             </li>
               
@@ -608,8 +579,7 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    </div>
-    
+    </div>    
  
     
     <!-- Rendering Page -->
@@ -723,7 +693,7 @@
     
     
   <!-- Footer -->
-  <footer class="site-footer">
+  <footer class="site-footer" ng-hide="currentPath === '/login'">
     <div class="site-footer-legal">&copy; 2016 <a href="http://www.cliffcreations.com/" target="_blank">TMP</a>, v<span app-version></span></div>
     <div class="site-footer-right">
       Crafted with <i class="red-600 wb wb-heart"></i> by <a href="http://www.cliffcreations.com/" target="_blank">cliffcreations</a>
@@ -750,6 +720,8 @@
   <script src="resources/js/chartist.min.js"></script>
   <script src="bower_components/chartist/dist/chartist.min.js"></script>
   <script src="resources/js/chartist-plugin-tooltip.min.js"></script>
+  <script src="bower_components/screenfull/dist/screenfull.js"></script>
+  <script src="bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
     
  
   <!-- Angular components -->
@@ -760,6 +732,7 @@
   
   <!-- Angular views -->
   <script src="app.js"></script>
+  <script src="views/login/login.js"></script>
   <script src="views/dashboard/dashboard.js"></script>
   <script src="views/employee/employee.js"></script>
     
@@ -776,7 +749,6 @@
   <!-- Plugins -->
   <script src="resources/js/switchery.min.js"></script>
   <script src="resources/js/intro.min.js"></script>
-  <script src="resources/js/screenfull.min.js"></script>
   <script src="resources/js/jquery-slidePanel.min.js"></script>
   <script src="resources/js/jquery-asPieProgress.min.js"></script>
   <script src="resources/js/jquery.matchHeight-min.js"></script>
@@ -785,7 +757,6 @@
 
   <!-- Scripts -->
   <script src="resources/js/core.min.js"></script>
-  <script src="resources/js/site.min.js"></script>
   <script src="resources/js/menu.min.js"></script>
   <script src="resources/js/menubar.min.js"></script>
   <script src="resources/js/sidebar.min.js"></script>
@@ -795,7 +766,7 @@
   <script src="resources/js/slidepanel.min.js"></script>
   <script src="resources/js/matchheight.min.js"></script>
 <!--  <script src="resources/js/team.min.js"></script>    -->
-    
+  <script src="resources/js/site.js"></script>    
     
 </body>
 </html>
