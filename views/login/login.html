@@ -1,5 +1,23 @@
 <style>
     
+    .activeLogin {
+        padding-top: 0!important;
+    }
+    .activeLogin .page {
+        background-image: url(../../resources/images/login_bg.jpg);
+        background-size: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+    }
+    .activeLogin .page:before {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        content: '';
+        background: #000;
+        opacity: .8;
+    }
+    
     .login_box {
         position: relative;
         left: 50%;

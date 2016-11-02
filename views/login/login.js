@@ -17,6 +17,16 @@ appTmp.controller('LoginCtrl', function($scope, $http, $route, $routeParams, $lo
                                 
     $scope.currentPath = $location.path();
     
+    $('body').addClass('activeLogin');
+    $('.site-navbar, .site-menubar, .site-footer').hide();
+    
+    /*
+    if ( $scope.currentPath=='/login' ) {
+        $('body').addClass('activeLogin');
+    } else {
+        $('body').removeClass('activeLogin');
+    }
+    */
           
 });
     

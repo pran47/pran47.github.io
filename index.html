@@ -28,6 +28,8 @@
   <link rel="stylesheet" href="bower_components/jquery-asPieProgress/dist/css/asPieProgress.min.css">
   <link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
   <link rel="stylesheet" href="resources/css/chartist-plugin-tooltip.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/>
+  <link rel="stylesheet" type="text/css" href="resources/css/animate-delay.css"/>
     
   <!-- Plugins -->
   <link rel="stylesheet" href="resources/css/animsition.min.css">
@@ -70,7 +72,7 @@
 <![endif]-->
     
     <!-- Header Nav -->
-    <nav ng-hide="currentPath === '/login'" class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse" role="navigation">
+    <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle hamburger hamburger-close navbar-toggle-left hided" data-toggle="menubar">
         <span class="sr-only">Toggle navigation</span>
@@ -493,7 +495,7 @@
     
     
     <!-- Main Nav -->
-    <div ng-hide="currentPath === '/login'" class="site-menubar site-menubar-light top_nav">
+    <div class="site-menubar site-menubar-light top_nav">
         <nav class="navbar navbar-default">
       <div class="">
         <div class="navbar-header">
@@ -520,8 +522,7 @@
             </li>
               
             <li class="dropdown">
-              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <i class="icon wb-table"></i> Department <span class="site-menu-arrow"></span></a>
+              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon wb-random"></i> Role <span class="site-menu-arrow"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#"><i class="icon wb-plus"></i> Add</a></li>
                 <li><a href="#"><i class="icon wb-list"></i> List</a></li>
@@ -529,7 +530,16 @@
             </li>
               
             <li class="dropdown">
-              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon wb-check-circle"></i> Designation <span class="site-menu-arrow"></span></a>
+              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon wb-bookmark"></i> Designation <span class="site-menu-arrow"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="icon wb-plus"></i> Add</a></li>
+                <li><a href="#"><i class="icon wb-list"></i> List</a></li>
+              </ul>
+            </li>
+              
+            <li class="dropdown">
+              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="icon wb-table"></i> Department <span class="site-menu-arrow"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#"><i class="icon wb-plus"></i> Add</a></li>
                 <li><a href="#"><i class="icon wb-list"></i> List</a></li>
@@ -553,12 +563,15 @@
             </li>
               
             <li class="dropdown">
-              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon wb-random"></i> Role <span class="site-menu-arrow"></span></a>
+              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="icon wb-check-circle"></i> Task <span class="site-menu-arrow"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#"><i class="icon wb-plus"></i> Add</a></li>
                 <li><a href="#"><i class="icon wb-list"></i> List</a></li>
               </ul>
             </li>
+              
+            <li class="active"><a href="#/dashboard"><i class="icon wb-warning"></i> Backlogs</a></li>
+
               
             <!--<li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="site-menu-arrow"></span></a>
@@ -572,8 +585,8 @@
               
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/">Default</a></li>
-            <li><a href="../navbar-static-top/">Static top</a></li>
+            <li><a href="#/login">Login</a></li>
+            <li><a href="#/calendar">Calendar</a></li>
             <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -693,7 +706,7 @@
     
     
   <!-- Footer -->
-  <footer class="site-footer" ng-hide="currentPath === '/login'">
+  <footer class="site-footer">
     <div class="site-footer-legal">&copy; 2016 <a href="http://www.cliffcreations.com/" target="_blank">TMP</a>, v<span app-version></span></div>
     <div class="site-footer-right">
       Crafted with <i class="red-600 wb wb-heart"></i> by <a href="http://www.cliffcreations.com/" target="_blank">cliffcreations</a>
@@ -707,6 +720,12 @@
   -->
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+      
+    
 
     
   <!-- App Core  -->
@@ -722,6 +741,7 @@
   <script src="resources/js/chartist-plugin-tooltip.min.js"></script>
   <script src="bower_components/screenfull/dist/screenfull.js"></script>
   <script src="bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
+  <script src="bower_components/matchHeight/dist/jquery.matchHeight-min.js"></script>
     
  
   <!-- Angular components -->
@@ -751,9 +771,9 @@
   <script src="resources/js/intro.min.js"></script>
   <script src="resources/js/jquery-slidePanel.min.js"></script>
   <script src="resources/js/jquery-asPieProgress.min.js"></script>
-  <script src="resources/js/jquery.matchHeight-min.js"></script>
   <script src="resources/js/jquery-selective.min.js"></script>
   <script src="resources/js/bootstrap-datepicker.min.js"></script>
+  
 
   <!-- Scripts -->
   <script src="resources/js/core.min.js"></script>

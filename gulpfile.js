@@ -12,6 +12,7 @@ gulp.task('browser-sync', function() {
 
 gulp.watch([
     '*',
+    'views/login/*',
     'views/dashboard/*',
     'views/employee/*'
 ]).on('change', bs.reload);
