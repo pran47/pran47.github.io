@@ -68,7 +68,10 @@ a.lnk_white:hover { color: #fff; }
 .auto_height { height: auto!important; }
 
 span.error {
+    width: 100%;
     color: #f00;
+    margin-bottom: 8px;
+    display: inline-block;
 }
 span.error .icon {
     width: 25px;
@@ -80,7 +83,10 @@ span.error .icon {
     line-height: 23px;
     margin-left: 5px;
 }
-
+.warning_icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
 
 
 

@@ -12,12 +12,16 @@
         height: 25px;
         padding: 0;
         margin-right: 17px;
+        line-height: 20px!important;
+    }
+    .btn-round-line.inAct {
+        line-height: 23px!important;
     }
     .btn-round-line i { margin: 0!important; }
     .edit_li .edt_text {
         height: 35px;
         line-height: 35px;
-        top: 4px;
+        top: 5px;
         color: #1B2432;
         width: 94%;
         background: transparent;
@@ -74,6 +78,7 @@
         box-shadow: 0 0 15px #999;
         transform: translateY(-2%);
     }
+    .margin-bottom-7 { margin-bottom: 7px; }
     
 </style>
 
@@ -99,8 +104,25 @@
              </a>
            </div>
            
-           <div class="col-sm-5 pull-right padding-right-0">             
-               <div class="dropdown pull-right">
+           <div class="col-sm-5 pull-right padding-right-0">
+               
+               <select class="btn btn-default dropdown-toggle btn-none pull-right sort_employee_drop" ng-model="employeeSearch.$" ng-init="employeeSearch.$=''">
+                 <option value="">All employees</option>
+                 <option value="Active">Active employees</option>
+                 <option value="InActive">InActive employees</option>
+                 <optgroup label="Blood Group">
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                 </optgroup>
+               </select>
+                              
+               <!--<div class="dropdown pull-right">
                           <button type="button" class="btn btn-default dropdown-toggle btn-none" id="exampleDefaultDropdownSubMenu" aria-expanded="true" data-toggle="dropdown">
                             Recommended Views
                             <span class="caret"></span>
@@ -124,7 +146,8 @@
                               </ul>
                             </li>
                           </ul>
-                </div>               
+</div>-->              
+               
            </div>
            
        </div>
@@ -139,35 +162,63 @@
                             <i class="icon wb-plus" aria-hidden="true"></i>
                         </button>
                         <input type="text" id="new_emp_name" name="new_e_name_input" class="edt_text" placeholder="Enter new employee name and hit enter" ng-model="new_e_name_input" ng-blur="empAdd()" required>
-                        <input type="hidden" ng-model="new_e_name_check">
                     </form>
                   </li>
-                  <!--<span ng-show="addEmp.new_e_name.$touched && addEmp.new_e_name.$invalid" class="error">
-                      The name is required <i class="icon wb-close"></i>
-                  </span>-->               
            </ul>
+          
+           
+           <div class="input-search">
+                <button type="submit" class="input-search-btn"><i class="icon wb-search" aria-hidden="true"></i></button>
+                <input type="text" class="form-control margin-bottom-7 border-radius-0" name="" ng-model="employeeSearchInput.$" placeholder="Search employee">
+           </div>
+           <h4 class="page-search-title text-right">
+               
+               
+               <br>
+               
+           Search Results For "{{employeeSearch.$}}
+               
+               <span ng-show="employeeSearch.$ == ''">All</span>
+               
+               <span ng-show="employeeSearch.$ == 'A+' || employeeSearch.$ == 'A-' || employeeSearch.$ == 'B+' || employeeSearch.$ == 'B-' || employeeSearch.$ == 'AB+' || employeeSearch.$ == 'AB-' || employeeSearch.$ == 'O+' || employeeSearch.$ == 'O-'">blood group</span> employees "
+           </h4>
+           
+           <p class="page-search-count text-right margin-bottom-0">About <span>{{(listEmployee|filter:employeeSearch).length}}</span> result (<span>0.13</span> seconds)</p>
+           
+
+           
+           <div class="widget" ng-show="!(listEmployee|filter:employeeSearch).length || !(listEmployee|filter:employeeSearchInput).length">
+            <div class="widget-content padding-20 bg-white">
+              <div class="counter counter-lg">
+                <div class="warning_icon"><i class="icon wb-warning"></i></div>
+                <div class="counter-label text-uppercase font-size-16">Sorry !!!</div>
+                <div class="counter-number-group margin-bottom-10">
+                  <span class="counter-number">No matching employees found</span>
+                </div>
+                <div class="counter-label text-uppercase font-size-16">for this search</div>
+              </div>
+            </div>
+          </div>
            
            
-           <ul class="list-group list-group-dividered list-group-full" id="append_emp_list_view">      
+           
+           <ul class="list-group list-group-dividered list-group-full" id="append_emp_list_view">               
+               <form name="listEmp" ng-submit="empAddfrmList()">                 
                
-               <form name="listEmp" ng-submit="empAddfrmList()">
-                   
-               
-                  <li class="list-group-item edit_li" ng-repeat="employee in listEmployee">
+                  <li class="list-group-item edit_li" ng-repeat="employee in listEmployee | filter:employeeSearch:strict | filter:employeeSearchInput:strict">
                     
-                        <button type="button" class="btn btn-icon btn-success btn-outline btn-round btn-round-line" tooltip-placement="top" uib-tooltip="Click to In-Active">
-                            <i class="icon wb-check" aria-hidden="true"></i>
+                        <button type="button" class="btn btn-icon btn-success btn-outline btn-round btn-round-line" tooltip-placement="top" uib-tooltip="Click to In-Active" data-id="{{employee.id}}" ng-click="employeeStatusChange($event)" ng-show="employee.status == 'Active'">
+                            <i class="icon wb-check"></i>
                         </button>
+                        <button type="button" class="btn btn-icon btn-danger btn-outline btn-round btn-round-line inAct" tooltip-placement="top" uib-tooltip="Click to Active" data-id="{{employee.id}}" ng-click="employeeStatusChange($event)" ng-show="employee.status == 'InActive'">
+                            <i class="icon wb-close"></i>
+                        </button>
+                      
                         <input type="text" name="edit_e_name_input" class="edt_text emp_edit_input" ng-model="edit_e_name_input_[employee.id]" ng-blur="empAddfrmList()" ng-init="edit_e_name_input_[employee.id]=employee.e_name" data-id="{{employee.id}}" ng-click="empClick($event)" required>
-                      <br>
-                      
-                      
+
                   </li>
-                   
-                   
-                   
-                </form>
-               
+
+                </form>               
            </ul>
            
            
@@ -193,7 +244,8 @@
             <div class="widget-body padding-horizontal-30 padding-vertical-20">
               <div style="position:relative;padding-left:110px;">
                 <a class="avatar avatar-100 bg-white img-bordered" href="javascript:void(0)" style="position:absolute;top:-50px;left:0;">
-                  <img src="../../resources/images/{{selectedEmployee.photo}}" alt="" class="thumb_bounce animate1 bounceIn">
+                  <img src="../../resources/images/{{selectedEmployee.photo}}" alt="" class="thumb_bounce animate1 bounceIn" ng-hide="selectedEmployee.photo == '' || selectedEmployee.photo == '0'">
+                  <img src="../../resources/images/no_image.jpg" alt="" class="thumb_bounce animate1 bounceIn" ng-show="selectedEmployee.photo == '' || selectedEmployee.photo == '0'">
                 </a>
                 <div class="margin-bottom-20">
                   <div class="font-size-20 line-height-0">
@@ -215,18 +267,16 @@
                     <span class="error" ng-show="viewEmp.email.$dirty && viewEmp.email.$invalid">
                         <span ng-show="viewEmp.email.$error.required"><i class="icon wb-close"></i> Email is required.</span>
                         <span ng-show="viewEmp.email.$error.email"><i class="icon wb-close"></i> Invalid email address.</span>
-                    </span>
-                      
-<!--
-                    <span ng-show="viewEmp.email.$touched && viewEmp.email.$invalid" class="error">
-                       <i class="icon wb-close"></i> The email is required
-                    </span>
--->
-                      
+                    </span>           
                   </div>
                   <div class="list-group-item">
                     <p class="list-group-item-text"><i class="icon wb-mobile"></i> Phone</p>
-                    <input type="text" class="list-group-item-heading editable_txt" placeholder="eg: +91 1234567890" ng-model="selectedEmployee.phn">
+                    <input type="text" name="phn" class="list-group-item-heading editable_txt" placeholder="eg: +9101234567" ng-pattern="phoneNumberPattern" ng-model="selectedEmployee.phn" minlength="10" maxlength="11">
+      <span class="error" ng-show="viewEmp.phn.$error.required"><i class="icon wb-close"></i> Required!</span>
+      <span class="error" ng-show="viewEmp.phn.$error.minlength"><i class="icon wb-close"></i> Phone number not less that 10 character.</span>
+      <span class="error" ng-show="viewEmp.phn.$error.maxlength"><i class="icon wb-close"></i> Phone number not more than 11 character.</span>
+      <br>
+      <span class="error" ng-show="viewEmp.phn.$error.pattern"><i class="icon wb-close"></i> Please match pattern [+9101234567 or 9101234567]</span>
                   </div>
                   <div class="list-group-item">
                     <p class="list-group-item-text"><i class="icon wb-plugin"></i> Platform</p>

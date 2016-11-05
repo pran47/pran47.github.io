@@ -18,6 +18,10 @@ angular.module('appTmp.employee', ['ngRoute'])
 //Controller for Employee ADD
 appTmp.controller('AddEmployeeCtrl', function($scope, $http, $location, $filter) {
     
+    
+    $scope.phoneNumberPattern = /^\+?\d{2}[ ]?\d{3}[ ]?\d{5}$/;
+    
+    
     // Function for Match height
     $(function() {
         $('.match_height').matchHeight();
@@ -81,7 +85,7 @@ appTmp.controller('AddEmployeeCtrl', function($scope, $http, $location, $filter)
 		"created_ip": null,
 		"last_log_date": null,
 		"last_log_ip": null,
-		"status": "Active",
+		"status": "InActive",
 		"description": null,
 		"project": null,
 		"drp_role": []
@@ -236,7 +240,7 @@ appTmp.controller('AddEmployeeCtrl', function($scope, $http, $location, $filter)
 		"created_ip": null,
 		"last_log_date": null,
 		"last_log_ip": null,
-		"status": "Active",
+		"status": "InActive",
 		"description": null,
 		"project": null,
 		"drp_role": []
@@ -273,8 +277,6 @@ appTmp.controller('AddEmployeeCtrl', function($scope, $http, $location, $filter)
 		"drp_role": []
 	}
     ]
-    
-    
     
 
     
@@ -340,15 +342,35 @@ appTmp.controller('AddEmployeeCtrl', function($scope, $http, $location, $filter)
         });
         
             
-        
-        
+
     
         // Employee add on Blur and Submit
         $scope.empAdd = function() {            
-            if($scope.addEmp.$valid) {               
+            if($scope.addEmp.$valid) {
                 // Add to array
-                $scope.listEmployee.unshift({e_name:$scope.new_e_name_input});
-                $scope.new_e_name_input = "";
+//                $scope.listEmployee.unshift({e_name:$scope.new_e_name_input});
+//                $scope.new_e_name_input = "";
+
+                
+                // Sending New Name (POST)
+                var data = $.param({
+                json: JSON.stringify({
+                        name: $scope.new_e_name_input
+                    })
+                });
+                $http.post("actions/post.php", data).success(function(data, status) {
+                        // $scope.e_name = data;
+                        // Add to array
+                        $scope.listEmployee.unshift({e_name:$scope.new_e_name_input});
+                        $scope.new_e_name_input = "";
+                }).error(function(data) {
+                        console.log('Adding Failed');
+                    
+                        $scope.new_e_name_id_input = "315";                    
+                        $scope.listEmployee.unshift({id: $scope.new_e_name_id_input, e_name: $scope.new_e_name_input, status: "Active"});
+                        $scope.new_e_name_input = "";
+                });
+                
             } else {
                 
             }            
@@ -369,14 +391,11 @@ appTmp.controller('AddEmployeeCtrl', function($scope, $http, $location, $filter)
             $(function() {
                 $('.match_height').matchHeight();
             });            
-            $scope.currentEmpId = $(item.target).data('id');           
+            $scope.currentEmpId = $(item.target).data('id');
             // Filter selected employee from all employees
             $scope.selectedEmployee = $filter('filter')($scope.listEmployee, {id: $scope.currentEmpId}, true);
             $scope.selectedEmployee = $scope.selectedEmployee[0];
         }
-        
-    
-       
         
         
         // Send employee details (PUT)
@@ -407,6 +426,25 @@ appTmp.controller('AddEmployeeCtrl', function($scope, $http, $location, $filter)
                 
                         
         }); //End Fn send Details Post    
+    
+    
+        // Employee status change
+        $scope.employeeStatusChange = function(status){
+            $scope.currentEmpStatusId = $(status.target).data('id');
+            
+            // Update Employee Status (PUT)
+            var data = $.param({
+                json: JSON.stringify({
+                        id: $scope.currentEmpStatusId
+                    })
+                });
+                $http.put("/echo/json/", data).success(function(data, status) {
+                    //$scope.e_name = data;
+                });
+            
+        }
+        
+    
     
     
 
