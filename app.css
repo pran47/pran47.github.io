@@ -88,8 +88,30 @@ span.error .icon {
     margin-bottom: 10px;
 }
 
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url(../resources/icons/glyphicons-halflings-regular.eot);
+    src: url(../resources/icons/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../resources/icons/glyphicons-halflings-regular.woff2) format('woff2'), url(../resources/icons/glyphicons-halflings-regular.woff) format('woff'), url(../resources/icons/glyphicons-halflings-regular.ttf) format('truetype'), url(../resources/icons/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+}
 
-
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+.glyphicon-ok:before {
+    content: "\e013"
+}
+.glyphicon-remove:before {
+    content: "\e014"
+}
+.display-flex { display: -webkit-box!important; display: -webkit-flex!important; display: -ms-flexbox!important; display: flex!important; }
 
 
 

@@ -8,6 +8,8 @@ var appTmp = angular.module('appTmp', [
   'ngRoute',
   'ui',  
   'angularScreenfull',
+  'ngImgCrop',
+  'xeditable',
   'appTmp.login',
   'appTmp.dashboard',
   'appTmp.employee',
@@ -22,9 +24,17 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
 
 
 
+appTmp.run(function(editableOptions, editableThemes) {
+  editableThemes.bs3.inputClass = 'input-sm';
+  editableThemes.bs3.buttonsClass = 'btn-sm';
+  editableOptions.theme = 'bs3';
+});
+
+
 appTmp.run(['$rootScope', '$route', function($rootScope, $route, $location) {
+    
                 
-    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {            
+    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {        
        
         $('body').removeClass('activeLogin');
         $('.site-navbar, .site-menubar, .site-footer').show();
@@ -38,6 +48,8 @@ appTmp.run(['$rootScope', '$route', function($rootScope, $route, $location) {
 appTmp.controller('MainCtrl', function($scope, $http, $route, $routeParams, $location) {
                                 
     $scope.currentPath = $location.path();
+    
+    $scope.Math = window.Math;
     
     
           

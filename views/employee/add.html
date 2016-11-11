@@ -80,12 +80,30 @@
     }
     .margin-bottom-7 { margin-bottom: 7px; }
     
+    .modal-dialog {
+        margin-top: 140px;
+    }
+    .cropArea {
+      background: #eee;
+      overflow: hidden;
+      height: 300px;
+      margin-top: 13px;
+      margin-bottom: 10px;
+    }
+    .padding-top-8 {
+        padding-top: 8px;
+    }
+    .inline-block {
+        display: inline-block;
+    }
+    
 </style>
 
 
 <div class="row padding-vertical-30 padding-top-0">
     <div class="col-sm-12 text-center">
         <h2>Add Employee.</h2>
+        <br>
     </div>
 </div>
 
@@ -106,8 +124,8 @@
            
            <div class="col-sm-5 pull-right padding-right-0">
                
-               <select class="btn btn-default dropdown-toggle btn-none pull-right sort_employee_drop" ng-model="employeeSearch.$" ng-init="employeeSearch.$=''">
-                 <option value="">All employees</option>
+               <select class="btn btn-default dropdown-toggle btn-none pull-right sort_employee_drop" ng-model="employeeSearch.$" ng-init="employeeSearch.$='All'" ng-click="hideTextResultLength()">
+                 <option value="All">All employees</option>
                  <option value="Active">Active employees</option>
                  <option value="InActive">InActive employees</option>
                  <optgroup label="Blood Group">
@@ -158,7 +176,7 @@
            <ul class="list-group list-group-dividered list-group-full" id="append_emp_list">               
                   <li class="list-group-item edit_li">
                     <form name="addEmp" ng-submit="empAdd()">
-                        <button type="button" class="btn btn-icon btn-success btn-outline btn-round btn-round-line" tooltip-placement="top" uib-tooltip="Click to In-Active">
+                        <button type="button" class="btn btn-icon btn-success btn-round btn-round-line">
                             <i class="icon wb-plus" aria-hidden="true"></i>
                         </button>
                         <input type="text" id="new_emp_name" name="new_e_name_input" class="edt_text" placeholder="Enter new employee name and hit enter" ng-model="new_e_name_input" ng-blur="empAdd()" required>
@@ -169,28 +187,32 @@
            
            <div class="input-search">
                 <button type="submit" class="input-search-btn"><i class="icon wb-search" aria-hidden="true"></i></button>
-                <input type="text" class="form-control margin-bottom-7 border-radius-0" name="" ng-model="employeeSearchInput.$" placeholder="Search employee">
+                <input type="text" class="form-control margin-bottom-7 border-radius-0" name="" ng-model="employeeSearchInput.$" placeholder="Search employee" ng-click="hideSelectResultLength()">
            </div>
            <h4 class="page-search-title text-right">
-               
-               
-               <br>
-               
-           Search Results For "{{employeeSearch.$}}
-               
+               Search Results For "{{employeeSearch.$}}
                <span ng-show="employeeSearch.$ == ''">All</span>
-               
                <span ng-show="employeeSearch.$ == 'A+' || employeeSearch.$ == 'A-' || employeeSearch.$ == 'B+' || employeeSearch.$ == 'B-' || employeeSearch.$ == 'AB+' || employeeSearch.$ == 'AB-' || employeeSearch.$ == 'O+' || employeeSearch.$ == 'O-'">blood group</span> employees "
-           </h4>
+           </h4>           
            
-           <p class="page-search-count text-right margin-bottom-0">About <span>{{(listEmployee|filter:employeeSearch).length}}</span> result (<span>0.13</span> seconds)</p>
+           <!--textbox result -->
+           <p class="page-search-count text-right margin-bottom-0 count_from_text">
+               About <span>{{(listEmployee|filter:employeeSearchInput).length}} </span> result (<span>0.13</span> seconds)
+<!--               About <span>{{(listEmployee|filter:search).length}} </span> result (<span>{{ (listEmployee|filter:search).length / 60 | limitTo: 4 }}</span> seconds)-->
+           </p>
            
-
+           <!--selectbox result -->
+           <p class="page-search-count text-right margin-bottom-0 count_from_select">
+               About <span>{{(listEmployee|filter:employeeSearch).length}} </span> result (<span>0.13</span> seconds)
+           </p>
+           
            
            <div class="widget" ng-show="!(listEmployee|filter:employeeSearch).length || !(listEmployee|filter:employeeSearchInput).length">
             <div class="widget-content padding-20 bg-white">
               <div class="counter counter-lg">
-                <div class="warning_icon"><i class="icon wb-warning"></i></div>
+                <div class="warning_icon">
+                    <img src="../../resources/images/sad.svg" style="width:70px;margin-bottom:7px;">
+                </div>
                 <div class="counter-label text-uppercase font-size-16">Sorry !!!</div>
                 <div class="counter-number-group margin-bottom-10">
                   <span class="counter-number">No matching employees found</span>
@@ -205,15 +227,13 @@
            <ul class="list-group list-group-dividered list-group-full" id="append_emp_list_view">               
                <form name="listEmp" ng-submit="empAddfrmList()">                 
                
-                  <li class="list-group-item edit_li" ng-repeat="employee in listEmployee | filter:employeeSearch:strict | filter:employeeSearchInput:strict">
-                    
+                  <li class="list-group-item edit_li" ng-repeat="employee in listEmployee | filter:employeeSearch:true | filter:employeeSearchInput:strict">
                         <button type="button" class="btn btn-icon btn-success btn-outline btn-round btn-round-line" tooltip-placement="top" uib-tooltip="Click to In-Active" data-id="{{employee.id}}" ng-click="employeeStatusChange($event)" ng-show="employee.status == 'Active'">
                             <i class="icon wb-check"></i>
                         </button>
                         <button type="button" class="btn btn-icon btn-danger btn-outline btn-round btn-round-line inAct" tooltip-placement="top" uib-tooltip="Click to Active" data-id="{{employee.id}}" ng-click="employeeStatusChange($event)" ng-show="employee.status == 'InActive'">
                             <i class="icon wb-close"></i>
                         </button>
-                      
                         <input type="text" name="edit_e_name_input" class="edt_text emp_edit_input" ng-model="edit_e_name_input_[employee.id]" ng-blur="empAddfrmList()" ng-init="edit_e_name_input_[employee.id]=employee.e_name" data-id="{{employee.id}}" ng-click="empClick($event)" required>
 
                   </li>
@@ -233,7 +253,7 @@
 <!-- View Block -->
 <div class="col-md-6 view_block">
 
- <div class="panel match_height">
+ <div class="panel match_height view_block_height">
    <div class="panel-body container-fluid padding-0 view_highlite">
        
     <form name="viewEmp" id="viewEmpForm" novalidate>
@@ -243,10 +263,18 @@
             </div>
             <div class="widget-body padding-horizontal-30 padding-vertical-20">
               <div style="position:relative;padding-left:110px;">
-                <a class="avatar avatar-100 bg-white img-bordered" href="javascript:void(0)" style="position:absolute;top:-50px;left:0;">
+                
+                <a class="avatar avatar-100 bg-white img-bordered avatar_update_trigger" href="javascript:void(0)" style="position:absolute;top:-50px;left:0;" tooltip-placement="top" uib-tooltip="Click To Upload Profile Picture" ng-click="showCropArea()" ng-hide="checkCropArea">
                   <img src="../../resources/images/{{selectedEmployee.photo}}" alt="" class="thumb_bounce animate1 bounceIn" ng-hide="selectedEmployee.photo == '' || selectedEmployee.photo == '0'">
                   <img src="../../resources/images/no_image.jpg" alt="" class="thumb_bounce animate1 bounceIn" ng-show="selectedEmployee.photo == '' || selectedEmployee.photo == '0'">
                 </a>
+                
+                  
+                <span class="avatar avatar-100 bg-white img-bordered" href="javascript:void(0)" style="position:absolute;top:-50px;left:0px;" ng-show="checkCropArea">
+                    <img ng-src="{{myCroppedImage}}" alt="Profile picture" class="thumb_bounce animate1 bounceIn" />           
+                </span>
+                  
+                  
                 <div class="margin-bottom-20">
                   <div class="font-size-20 line-height-0">
 <input type="text" class="list-group-item-heading editable_txt font-size-20 margin-0" ng-model="selectedEmployee.e_name" readonly>
@@ -258,6 +286,22 @@
                   </div>
                 </div>
               </div>
+                
+                
+            <div class="cropStage" ng-show="checkCropArea">
+                  <div>
+                      <p class="list-group-item-text margin-bottom-7 pull-left width-full">
+                          <span class="pull-left padding-top-8 inline-block">Select an image from your gallery</span>
+                          <button type="button" class="btn btn-success pull-right" ng-click="uploadProPic()" ng-show="proPicSubmitBtn"><i class="icon wb-check"></i> Submit</button>
+                          <button type="button" class="btn btn-primary pull-right margin-right-10" ng-click="hideCropArea()"><i class="icon wb-close"></i> Close</button>
+                      </p>
+                      <input type="file" id="fileInput" class="form-control" /></div>
+                  <div class="cropArea">
+                    <img-crop image="myImage" result-image="myCroppedImage" result-image-size="128" on-load-done="validProPic()" on-load-error="inValidProPic"></img-crop>
+                  </div>
+            </div>
+            <!--/.cropStage-->
+                
               
                 <div class="list-group">
                   <div class="list-group-item">
@@ -318,7 +362,29 @@
 
 
 
-
 <a href="#/list-employee">
   <button type="button" class="btn btn-floating btn-danger material_btn_corner"><i class="icon wb-list" aria-hidden="true"></i></button>
 </a>
+
+
+<!--
+<script type="text/ng-template" id="dpUpload.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Upload Your Profile Picture</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+          
+              <div>Select an image file: <input type="file" id="fileInput" /></div>
+              <div class="cropArea">
+                <img-crop image="myImage" result-image="myCroppedImage" area-type="square"></img-crop>
+              </div>
+              <div>Cropped Image:</div>
+              <div><img ng-src="{{myCroppedImage}}" /></div>            
+            
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+        </div>
+</script>
+-->
